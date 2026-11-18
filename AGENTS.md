@@ -121,6 +121,6 @@ Edit the Shell import's `version:` hash in `hugo.yaml` to the new commit
 deliberate, commit-precise, no Shell tagging. Hugo resolves the pinned commit directly, so the
 build passes even with stale `go.mod`/`go.sum`; to keep them in sync after a bump run
 `go get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@<hash>` (don't use `hugo mod get` —
-it ignores the pin and can float the build to Shell `main`; don't use `hugo mod tidy` either — it
-can prune the Shell entry). Verify `hugo mod graph` shows the pinned pseudo-version and still
-shows `github.com/pgsty/oink v1.4.0` (the pinned theme). Re-run the publication gate.
+it rewrites `go.mod`/`go.sum` to Shell `main`, dirtying the lockfiles; don't use `hugo mod tidy`
+either — it can prune the Shell entry). Verify `hugo mod graph` shows the pinned pseudo-version
+and still shows `github.com/pgsty/oink v1.4.0` (the pinned theme). Re-run the publication gate.
