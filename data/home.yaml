@@ -18,10 +18,10 @@ cards:
       desc: What a field manual is, what it is not, and how to use it — for humans and AI agents.
       icon: fa-solid fa-book-open
       url: hello-world/what-is-a-field-manual/
-    - title: Prerequisites
-      desc: What must be true before you start.
-      icon: fa-solid fa-list-check
-      url: hello-world/prerequisites/
+    - title: Editing
+      desc: Clone, render, and manage the Hello World field manual — tooling, preview, file layout, and verification.
+      icon: fa-solid fa-pen-to-square
+      url: hello-world/editing/
     - title: Set up
       desc: One procedure that changes the system — procedure, verification, rollback.
       icon: fa-solid fa-play
