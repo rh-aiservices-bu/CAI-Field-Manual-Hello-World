@@ -178,5 +178,3 @@ moves to the Dart Sass transpiler.
 ## One-time admin
 
 - **GitHub Pages**: Settings → Pages → Source = **GitHub Actions**.
-- **omp agent**: Settings → Variables/Actions → `AGENT_BASE_URL` (variable),
-  `AGENT_MODEL` (variable); Settings → Secrets → `AGENT_API_KEY` (secret).

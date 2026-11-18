@@ -35,7 +35,6 @@ This site is built on that premise. Every page serves both audiences at once:
 - The page action menu offers *Copy markdown* and *View markdown*, and hands the page to Claude, ChatGPT, or Gemini.
 - The whole site is also readable as `llms.txt`, and every manual is available as one flattened markdown bundle, with every variant labeled and nothing filtered.
 - [Chat]({{< relref "/chat" >}}) discusses any manual with your own OpenAI-compatible endpoint; the key stays in your browser.
-- The boring tasks are already being delegated: comment `/omp <request>` on any issue or PR review thread and this repo's own agent drafts the change, gated by the same publication check as human PRs.
 
 ## Why it is open
 

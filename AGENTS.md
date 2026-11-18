@@ -121,12 +121,3 @@ hugo mod get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell
 
 Then verify `hugo mod graph` still shows `github.com/pgsty/oink v1.4.0` (the pinned theme — do not use `-u`, it upgrades transitive deps). Re-run the publication gate.
 
-## omp agent (CI)
-
-The repo runs an [omp](https://omp.sh)-based coding agent via
-`.github/workflows/omp.yml`. Comment `/omp <request>` on any issue or PR
-review thread to invoke it; it reads this file and README.md, and opens a
-draft PR from a branch `omp/issue-<n>` for any change. Configuration is three
-repo-level settings — `AGENT_BASE_URL` (variable), `AGENT_MODEL` (variable),
-`AGENT_API_KEY` (secret) — never in files. The publication gate above applies
-to the agent exactly as it applies to you.
