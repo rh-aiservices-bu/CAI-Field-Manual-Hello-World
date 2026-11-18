@@ -5,24 +5,23 @@ weight: 40
 icon: fa-solid fa-wand-magic-sparkles
 ---
 
-Reading a field manual is not just scrolling. Two controls shape what you see and where you take it — the variant selector that filters content to your version and workflow, and the command palette that lets you search the site and hand the current page to your AI assistant. This page shows both at their default state and explains how to use them.
+Reading a field manual is not just scrolling. Two controls shape what you see and where you take it — the variant selector that filters content to your version and workflow, and the command palette that lets you search the site and hand the current page to your AI assistant. This page uses screenshots taken with both filters temporarily set to Show all to make them easy to read; what you see when you first arrive is slightly different (see below).
 
 ## Variant selector — pick your version and workflow, or show all
 
 At the top of every manual page, directly above the first heading, the selector offers one row per filter:
 
-![Variant selector with two axes: RHAIE Version (Show all, 3.4, 3.5, 3.6) and Ops Mode (Show all, GitOps, Manual, Scripted) — both on Show all](variant-selector.png)
+![Variant selector with two axes: RHAIE Version (Show all, 3.4, 3.5, 3.6) and Ops Mode (Show all, GitOps, Manual, Scripted) — shown with both set to Show all](variant-selector.png)
 
 - **RHAIE Version** — `Show all` · `3.4` · `3.5` · `3.6`
 - **Ops Mode** — `Show all` · `GitOps` · `Manual` · `Scripted`
 
 How to use it:
 
-1. **Click a pill to filter.** Only the content for that version or ops mode stays visible — for example, picking `3.5` hides notes that only apply to `3.4` or `3.6`.
-2. **Pick Show all to compare.** `Show all` removes the filter for that row so every version's notes and every procedure variant render together. Use it when you want to see the differences side by side.
-3. **Your choice sticks.** Once you pick a version or mode, it stays selected as you move between pages. Change it anytime by clicking a different pill, or reset it on the [Customize this!]({{< relref "/hello-world/customize" >}}) page where the same options appear.
-
-## Command palette — search, then act
+1. **Notice the default.** When you arrive for the first time, **RHAIE Version** is set to **3.6** and **Ops Mode** to **Show all**. That means notes for 3.4 or 3.5 are already hidden — you only see 3.6 content until you change it.
+2. **Click a pill to filter.** Only the content for that version or ops mode stays visible — for example, picking `3.5` shows 3.5-only notes and hides 3.4/3.6-only ones.
+3. **Pick Show all to compare.** `Show all` removes the filter for that row so every version's notes and every procedure variant render together. Use it when you want to see the differences side by side — that is the state in the screenshot above.
+4. **Your choice sticks.** Once you pick a version or mode, it stays selected as you move between pages. Change it anytime by clicking a different pill, or reset it on the [Customize this!]({{< relref "/hello-world/customize" >}}) page where the same options appear.
 
 The site's search and all quick actions live in one overlay — the command palette:
 
@@ -52,9 +51,8 @@ The rows you see under **Page actions** let you take the current page elsewhere 
 
 | Row | What it does |
 |---|---|
-| **Copy Markdown** | Copies the current page as markdown to your clipboard. |
-| **Open in ChatGPT** | Opens ChatGPT in a new tab with this page pre-loaded so you can ask questions about it. |
-| **Open in Claude** | Same, for Claude. |
+| **Open in ChatGPT** | Opens ChatGPT in a new tab with a prompt pointing at this page ("Read from <page URL> so I can ask questions about it") so you can ask questions — the content itself is not fetched, you are handing the AI the URL. |
+| **Open in Claude** | Same prompt pointing at this page, for Claude. |
 | **Open Gemini** | Opens the Gemini app in a new tab. Unlike ChatGPT and Claude, it does not pre-fill a prompt — paste the page URL yourself. |
 | **Feed it to my AI Agent** | Opens a dialog with a ready-to-copy setup prompt for Claude Code or Codex (see below). |
 | **View markdown** | Opens the raw markdown for this page in a new tab. |
@@ -70,4 +68,4 @@ Choosing **Feed it to my AI Agent** opens a dialog titled *Feed this to your AI 
 
 ---
 
-The two screenshots above are part of this page. They were taken with both filters on `Show all` and the palette freshly opened with an empty query — the state new visitors see first.
+The two screenshots above are part of this page. The variant selector was captured with both filters temporarily set to `Show all` for clarity; your first visit lands on RHAIE Version **3.6** and Ops Mode **Show all**, with 3.4/3.5 notes hidden until you choose Show all. The palette was captured with an empty query. Your own filter choices — and therefore what the page hides — are saved in the browser and persist across pages.
