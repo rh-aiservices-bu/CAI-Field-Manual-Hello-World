@@ -50,11 +50,10 @@ services:
 outputs:
   home: [HTML, RSS, markdown, LLMS]
   page: [HTML, markdown]
-  # LLMSFULL is enabled per section in front matter: the theme emits it only
-  # for a top-level section and warns for nested ones, so a site-wide section
-  # output trips /field-manual/hello-world/. content/field-manual/_index.md
-  # opts in; the chat page reads that bundle as its whole-manual context.
-  section: [HTML, RSS, print, markdown]
+  # LLMSFULL is enabled per section via front matter `outputs: [HTML, RSS, print, markdown, LLMSFULL]`
+  # on that section's _index.md. Enable it on content/hello-world/_index.md
+  # when you want a whole-manual flattened bundle; nested sections should not
+  # declare it (theme warns).
 
 params:
   github_repo: https://github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World
@@ -105,15 +104,8 @@ params:
     - { id: cluster, label: Cluster, default: .ocp.abcd.sandbox1234.opentlc.com }
 
 # Site header navigation. oink renders .Site.Menus.main in the navbar center
-# zone and the home mobile drawer; the entry's page supplies the icon, and
-# llms.txt lists it under Site index. Field Manual stays reachable through
-# the landing cards and the sidebar, so Chat is the only entry for now.
-menus:
-  main:
-    - identifier: chat
-      name: Chat
-      pageRef: /chat
-      weight: 30
+# zone. With a single hello-world manual the landing cards are the primary
+# navigation; add entries here when you have more manuals or tools.
 
 module:
   imports:
