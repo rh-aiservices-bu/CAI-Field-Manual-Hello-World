@@ -5,7 +5,7 @@ hero:
   eyebrow: hello world
   title_lines:
     - words: [{ text: "Hello, world!", style: primary }]
-  lead: A blank field manual — duplicate it and fill in your own field procedures.
+  lead: A blank field manual to copy and make your own.
   actions:
     - { label: Open the Hello World of Field Manuals, url: hello-world/, icon: fa-solid fa-seedling, style: primary }
 
@@ -13,35 +13,36 @@ cards:
   eyebrow: Manual
   title: Inside this manual
   columns: 2
+  text: Three chapters are live; the other four are template stubs you create by following Writing the field manual.
   items:
     - title: Introduction
-      desc: What a field manual is, what it is not, and how to use it — for humans and AI agents.
+      desc: The format, who writes it, and the contract it makes.
       icon: fa-solid fa-book-open
       url: hello-world/what-is-a-field-manual/
     - title: Editing
-      desc: Clone, render, and manage the Hello World field manual — tooling, preview, file layout, and verification.
+      desc: Install the toolchain, clone, preview, and publish.
       icon: fa-solid fa-pen-to-square
       url: hello-world/editing/
     - title: Set up
-      desc: One procedure that changes the system — procedure, verification, rollback.
+      desc: One procedure that changes the system, with rollback.
       icon: fa-solid fa-play
-      url: hello-world/set-up/
+      url: ""
     - title: Operate
-      desc: Day-two health checks, drift detection, and when to escalate.
+      desc: Day-two health checks and drift detection.
       icon: fa-solid fa-gauge-high
-      url: hello-world/operate/
+      url: ""
     - title: Things that broke
-      desc: Known issues where you hit them — symptom, diagnosis, workaround, tracker id.
+      desc: Known issues and their workarounds, documented inline.
       icon: fa-solid fa-triangle-exclamation
-      url: hello-world/things-that-broke/
+      url: ""
     - title: Customize this!
-      desc: Set the choices this manual remembers — version, ops mode, name, cluster.
+      desc: Pick your version, ops mode, name, and cluster once.
       icon: fa-solid fa-sliders
       url: hello-world/customize/
     - title: Teardown
-      desc: Remove what you created — clean-up, verification, and what to leave behind.
+      desc: Remove everything, and verify the system is clean.
       icon: fa-solid fa-broom
-      url: hello-world/teardown/
+      url: ""
 
 cta:
   title: We want your feedback.
@@ -80,6 +81,6 @@ faq:
   title: Questions people actually ask
   items:
     - question: Why does every command show its expected output?
-      answer: A command whose output nobody checks is a guess about the system's state. The status gate turns "ran it" into "confirmed it".
+      answer: Because a step is done when its verify output matches, not when the command runs.
     - question: Why do versions and ops modes live in a selector instead of separate pages?
-      answer: Divergence is permanent; separate pages fork the manual and drift apart. The selector filters, the choice persists, and the markdown output carries every variant labeled for agents.
+      answer: Separate pages fork the manual and drift apart; the selector keeps one page that filters.
