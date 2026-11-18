@@ -110,8 +110,8 @@ params:
 module:
   imports:
     - path: github.com/rh-aiservices-bu/CAI-Field-Manual-Shell
-      # Pinned to Shell commit a3958fd743d7 ("docs: fix workspace gate example..."); bump by editing this hash.
-      version: a3958fd743d7
+      # Pinned to Shell commit 7dcb57d423e2 on main; bump by editing this hash.
+      version: 7dcb57d423e2
   hugoVersion:
     extended: true
     min: 0.168.0

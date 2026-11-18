@@ -2,3 +2,5 @@ github.com/pgsty/oink v1.4.0 h1:EAYCzReap9+nrXuZUogmrXEv62ulJUaSNK1zpGRwM5Y=
 github.com/pgsty/oink v1.4.0/go.mod h1:GBKnERMfbKlRSFuKCa+kV7sehSAT7kAlYHxwxglg9Jw=
 github.com/rh-aiservices-bu/CAI-Field-Manual-Shell v0.0.0-20261118152648-a3958fd743d7 h1:QLS0ISxY3qYhHFDJrdW9Nm+42wVkoSapWvrbhMRNx54=
 github.com/rh-aiservices-bu/CAI-Field-Manual-Shell v0.0.0-20261118152648-a3958fd743d7/go.mod h1:wcoWoSmPLS1iMEcLDMQK1LG20lpJx1FM7RgHvjDsLgk=
+github.com/rh-aiservices-bu/CAI-Field-Manual-Shell v0.0.0-20261118192712-7dcb57d423e2 h1:wVmzq27aVncKg09j/mve+4HlQyvs6Up8aXGYfJ00WZ8=
+github.com/rh-aiservices-bu/CAI-Field-Manual-Shell v0.0.0-20261118192712-7dcb57d423e2/go.mod h1:wcoWoSmPLS1iMEcLDMQK1LG20lpJx1FM7RgHvjDsLgk=
