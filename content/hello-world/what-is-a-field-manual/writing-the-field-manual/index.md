@@ -300,7 +300,9 @@ grep -l "## Verification" content/hello-world/*/index.md
 Expected output:
 
 ```sh
+content/hello-world/operate/index.md
 content/hello-world/set-up/index.md
+content/hello-world/things-that-broke/index.md
 ```
 
 > **Authoring new pages:** Add leaves as `content/hello-world/<slug>/index.md` leaf bundles. The default archetype (`archetypes/default.md`) scaffolds the front matter — set `description` and `weight` to place it in the left nav. Remove any `draft: true` if it appears (drafts are excluded from the build, so the gate would still pass while the page stays invisible).
