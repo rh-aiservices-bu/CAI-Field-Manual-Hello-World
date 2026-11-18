@@ -9,7 +9,7 @@ Every page in this site serves two readers at once — you and your AI agent —
 
 ## As a human
 
-1. **Follow the timeline.** The left nav is chronological — prerequisites first, then set up, operate, things that broke, and teardown. Start where your work starts; the chapter order matches the order you do the work in.
+1. **Follow the timeline.** The left nav is chronological — introduction first, then prerequisites, set up, operate, things that broke, and teardown. Start where your work starts; the chapter order matches the order you do the work in.
 2. **Set your context once.** Open [Customize this!]({{< relref "/hello-world/customize" >}}) and pick your RHAI version, ops mode, name, and cluster. The choice persists in `localStorage` across pages, visits, and tabs — every later command substitutes your values automatically.
 3. **Filter, don't fork.** The selector at the top of every manual filters version-specific notes and ops-mode blocks. Use *Show all* when you want every variant side by side instead of separate pages.
 4. **Verify every step.** Every command is followed by a verify command and the literal output you should see. A step is not done when it runs — it is done when its verify output matches.

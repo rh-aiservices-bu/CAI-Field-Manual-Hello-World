@@ -1,4 +1,4 @@
-sections: [hero, timeline, cards, faq, cta]
+sections: [hero, cards, faq, cta]
 
 hero:
   align: center
