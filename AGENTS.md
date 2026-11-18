@@ -95,11 +95,17 @@ against `~/go/pkg/mod/github.com/pgsty/oink@v1.4.0/`:
 `layouts/docs/baseof.html`, `layouts/_partials/shell/sidebar-tree.html`,
 `layouts/_partials/pager-state.html`, `assets/js/action-registry.js`,
 `assets/js/page-actions.js`, `layouts/_partials/actions/context.html`,
-`layouts/_partials/actions/title-menu.html`.
+`layouts/_partials/actions/title-menu.html`. The Shell also ships a fixup
+`layouts/_partials/favicons.html` (hardcoded favicon list — no re-diff needed).
 
-Sanctioned extension points (free to edit in Shell): `td-variant-selector.html`,
-`hooks/head-end.html`, `hooks/body-end.html`, the customize shortcodes,
-`static/js/`, `static/css/`, `hugo.yaml`, `data/home.yaml`, `content/`.
+Sanctioned extension points in Shell (free to edit there):
+`td-variant-selector.html`, `hooks/head-end.html`, `hooks/body-end.html`,
+the customize shortcodes, `static/js/`, `static/css/`, `assets/scss/_styles_project.scss`.
+
+Local to this repo (free to edit here): `hugo.yaml` (site config: title,
+baseURL, variants, customize, menus — `docs_section`/`docs_sidebar_root` live
+in the Shell module's `hugo.yaml`), `data/home.yaml`, `content/` (manuals +
+doctrine).
 
 ## Verification for JS changes
 

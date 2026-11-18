@@ -71,10 +71,10 @@ Where things live:
   menus, module imports, plus the display-option (variant) axes — an ordered
   slice with per-axis `neutral` (show-all) and `default`, plus optional
   `status.specific` / `status.neutral` phrases for the selector's status
-  line (`{value}` = the option label) — customize fields (user, cluster),
-  `docs_section: field-manual` (drives the llms.txt Documentation index and
-  the docs-sidebar fallback), `docs_sidebar_root: home` (left nav roots at
-  the whole site tree).
+  line (`{value}` = the option label) — customize fields (user, cluster).
+  Chrome defaults (`logo`, `offline_search`, `copyright`, `footer_center_info`,
+  `ui` incl. `docs_section`/`docs_sidebar_root`) live in the Shell module's
+  `hugo.yaml` and are deep-merged; site values win on conflict.
 - `data/home.yaml` — landing page sections (hero, cards, cta)
 - `content/_index.md` — home page front matter
 - `content/field-manual/` — the manuals; `hello-world/` doubles as the blank

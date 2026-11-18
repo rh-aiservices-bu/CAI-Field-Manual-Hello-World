@@ -62,8 +62,8 @@ params:
   offline_search: true
   copyright:
     authors: Project contributors
-    from_year: 2026
   footer_center_info: ''
+  # Display options: the page-top selector (td-variant-selector.html, from
   # the shell module) persists these in localStorage and filters content
   # blocks tagged with the variant shortcode. These live HERE, not in the
   # shell module, so scripts/check-contracts.sh can validate content against
