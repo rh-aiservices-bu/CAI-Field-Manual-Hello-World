@@ -1,7 +1,7 @@
 ---
 title: Editing
 description: Clone, render, and manage the Hello World field manual — tooling, local preview, file layout, and verification
-weight: 10
+weight: 50
 icon: fa-solid fa-pen-to-square
 aliases: [/hello-world/prerequisites/]
 ---
@@ -122,12 +122,13 @@ The full build also prints a summary:
  Non-page files   │  2
  Static files     │ 38
  Processed images │  0
- Aliases          │  0
+ Aliases          │  1
  Cleaned          │  0
 Total in 994 ms
 ```
 
-`Pages` and `Total` will shift as content grows — match the **shape**, not the exact numbers: non-zero `Pages`, zero `Aliases` only if you have none configured (this chapter adds one), `Total` under a few seconds.
+`Pages` and `Total` will shift as content grows — match the **shape**, not the exact numbers: non-zero `Pages`, `Aliases` `1` (the `editing/` alias for the old `prerequisites/` URL), `Total` under a few seconds.
+
 
 ## 4. Where things live
 
@@ -166,20 +167,20 @@ Layouts, assets, and static files are **not in this repo** — they live in [`CA
 
 ## 5. Making changes
 
-Edit Markdown in `content/hello-world/`. Keep the existing front-matter keys (`title`, `description`, `weight`, `icon`) and add new pages as `content/hello-world/<slug>/index.md` leaf bundles.
+Edit Markdown in `content/hello-world/`. Keep the existing front-matter keys (`title`, `description`, `weight`, `icon`) and add new pages as `content/hello-world/<slug>/index.md` leaf bundles. The default archetype (`archetypes/default.md`) scaffolds the bundle front matter; edit `description` and `weight` to place it in the left nav, and remove any `draft: true` if you ever see it (drafts are excluded from the build, so the publication gate would still pass while the page is invisible).
 
 Useful commands:
 
 ```sh
 hugo new content content/hello-world/my-topic/index.md   # scaffold (respects archetype if present)
-hugo config | grep baseURL                                # confirm active site URL
+hugo config | grep -i baseurl                             # confirm active site URL (hugo config lowercases keys)
 hugo mod graph                                            # confirm pinned Shell + oink versions
 ```
 
 Expected for `hugo mod graph` (hash varies with the pinned commit):
 
 ```text
-github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@v0.0.0-... 
+github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@v0.0.0-...
 github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@v0.0.0-... github.com/pgsty/oink@v1.4.0
 ```
 
@@ -233,7 +234,7 @@ What to look for on the real page:
 
 ### Content navigation — where you are on this page
 
-The column on the right (and the heading stack inside the article) is the **in-page outline**. It is built from the page's `h1`/`h2`/`h3` headings (the right TOC) plus the variant selector that sits above the first heading.
+The column on the right (and the heading stack inside the article) is the **in-page outline**. It is built from the page's `h2`/`h3` headings — the right TOC lists `h2` as top-level entries and `h3` nested beneath them. The page title (`h1`) is the article header above the TOC scope and does not appear in it (Hugo default `markup.tableOfContents.startLevel: 2`). The variant selector sits directly above the first heading.
 
 ```
 ┌─ Article ───────────────────┐ ┌─ On this page ──────┐
@@ -259,8 +260,8 @@ The column on the right (and the heading stack inside the article) is the **in-p
   What it tells you:
   • Variant selector — filters version/mode blocks
     on this page (choice persists in localStorage).
-  • Headings — h1→h2→h3 outline; the right TOC
-    tracks scroll position.
+  • Headings — h2→h3 outline; h2 at the top level,
+    h3 nested; right TOC tracks scroll position.
   • Page actions (▸ next to title or palette `>`) —
     copy markdown, view source, jump to LLM apps.
 ```
@@ -268,7 +269,7 @@ The column on the right (and the heading stack inside the article) is the **in-p
 What to look for on the real page:
 
 - **Variant selector** — one row per axis (`hugo.yaml` `params.variants`); the active pill is highlighted and a status line beneath it restates the view as a sentence (e.g. *Showing RHAIE 3.6, every ops mode*). Your choice persists across pages via `localStorage` (`td-variant:v1:`).
-- **Right TOC** — `h1`/`h2`/`h3` entries only (deeper headings are not listed); verify by scrolling — the active entry highlights as you pass each section.
+- **Right TOC** — `h2`/`h3` entries only (`h2` at the top level, `h3` nested; `h4` and deeper are not listed). The page title is the `h1` above the outline, not inside it. Verify by scrolling — the active entry highlights as you pass each section.
 - **Page-action menu** — the `▾` disclosure next to the article title (and the command palette's `Page actions` group) offers *Copy Markdown*, *View markdown*, *Open in ChatGPT / Claude / Gemini*, *Feed it to my AI Agent*, and *View edit history*. Markdown outputs carry every variant labeled — HTML filtering is view-only.
 - **Customize** — the `Customize this!` chapter sets `user`/`cluster` tokens that substitute into every `{{</* customize ... */>}}` across the manual (also `td-customize:v1:` in `localStorage`).
 
