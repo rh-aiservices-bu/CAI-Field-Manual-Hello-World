@@ -3,6 +3,7 @@ title: Hello World
 description: A blank field manual — duplicate this manual and fill in your own field procedures.
 weight: 10
 icon: fa-solid fa-seedling
+sidebar_root_for: self
 cascade:
   type: docs
   footer_style: slim

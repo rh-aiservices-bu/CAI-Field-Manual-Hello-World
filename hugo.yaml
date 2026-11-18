@@ -62,6 +62,11 @@ params:
   copyright:
     authors: '[Project contributors](https://github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World/graphs/contributors)'
   footer_center_info: ''
+  ui:
+    # Manual-name selector above the left nav (oink root-menu.html). With one
+    # manual it renders as a static link; set per AGENTS.md nav-shape target
+    # so N manuals get the dropdown later.
+    sidebar_root_menu: true
   # Display options: the page-top selector (td-variant-selector.html, from
   # the shell module) persists these in localStorage and filters content
   # blocks tagged with the variant shortcode. These live HERE, not in the
