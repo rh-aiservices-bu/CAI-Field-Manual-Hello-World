@@ -1,13 +1,24 @@
-{{/* Links a file under static/ with the baseURL subpath applied,
-     or embeds it in-page when embed="true". */ -}}
+{{ $isFlow := eq (.Get "file") "visualizers/fm-flow.html" -}}
+{{ if and $isFlow (eq (.Get "embed") "true") -}}
+<style>
+.td-shell-article:has(.td-viz-embed--flow) { overflow: visible; }
+.td-viz-embed--flow:not(.td-viz-embed--expanded) {
+  width: min(980px, calc(100vw - 340px));
+  max-width: none;
+  margin-left: calc(50% - min(490px, calc(50vw - 170px)));
+  aspect-ratio: auto;
+  min-height: 640px;
+  border: 0;
+  box-shadow: 0 1px 0 var(--bs-border-color);
+}
+</style>
+{{ end -}}
 {{ if eq (.Get "embed") "true" }}
-<div class="td-viz-embed" id="td-viz-embed-{{ .Ordinal }}">
+<div class="td-viz-embed{{ if $isFlow }} td-viz-embed--flow{{ end }}" id="td-viz-embed-{{ .Ordinal }}">
   <button type="button" class="td-viz-embed__expand" aria-label="Expand the visualizer" title="Expand"></button>
   <iframe src="{{ .Get "file" | relURL }}" title="{{ .Get "label" }}" loading="lazy"></iframe>
   <a class="td-viz-embed__fallback" href="{{ .Get "file" | relURL }}" target="_blank" rel="noopener">Open the {{ .Get "label" }} in a new tab</a>
 </div>
-{{/* Expand toggle: fixed-inset lightbox, where the FlowStory engine's
-     (iframeW - 380px) working width makes node labels legible. */ -}}
 <script>
 (function () {
   var embed = document.getElementById('td-viz-embed-{{ .Ordinal }}');

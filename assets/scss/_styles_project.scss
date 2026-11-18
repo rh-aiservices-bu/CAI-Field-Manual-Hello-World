@@ -94,18 +94,3 @@ html.td-viz-lock {
     display: none;
   }
 }
-
-// Flow page: bleed the visualizer into the article's flex gap.
-// The shortcode renders <div id="td-viz-embed-0" class="td-viz-embed"> — we add a
-// non-id class so the bleed doesn't outrank .td-viz-embed--expanded (expand is
-// the only readable view <1050px and the only view <768px where iframe is hidden).
-.td-shell-article:has(.td-viz-embed--flow) { overflow: visible; }
-.td-viz-embed--flow {
-  width: min(980px, calc(100vw - 340px));
-  max-width: none;
-  margin-left: calc(50% - min(490px, calc(50vw - 170px)));
-  aspect-ratio: auto;
-  min-height: 640px;
-  border: 0;
-  box-shadow: 0 1px 0 var(--bs-border-color);
-}
