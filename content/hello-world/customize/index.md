@@ -1,5 +1,5 @@
 ---
-title: Customize this!
+title: Customize this Field Manual
 description: Set the choices this manual remembers — RHAIE version, ops mode, your name, your cluster.
 weight: 50
 icon: fa-solid fa-sliders
