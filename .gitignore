@@ -4,4 +4,4 @@
 /.hugo_build.lock
 .DS_Store
 /hugo.direct.sum
-/hugo.work
+/_archive/
