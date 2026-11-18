@@ -40,51 +40,12 @@ Requires `public/` from the production build and checks that every variant axis/
 and customize token used in `content/` is declared in this repo's `hugo.yaml`.
 
 ## Content rules
-- Manuals live in `content/field-manual/<manual>/`. New manual = duplicate the
-  blank skeleton in `content/field-manual/hello-world/`.
-- Author doctrine: read `content/writing-the-field-manual/conventions.md` before
-  writing manual pages. Six conventions: chronological information architecture
-  (field-work timeline → `1..N` chapters with `N.M` children; manual name in the
-  selector above the left nav; `h1/h2/h3` right TOC), status-gate verification
-  (every command + verify + literal expected output), inline known issues,
-  variant selector axes, customize tokens, dual consumption.
-- Nav shape (target, not yet shipped): left nav must read `1` → `N` top chapters
-  with two-level fold/unfold (`N.M`), header is `CAI Field Manual` only, manual
-  name sits in the selector directly above the tree. Levers (no pinned-file
-  edits): per-manual `sidebar_root_for: self` + `params.ui.sidebar_root_menu:
-  true` (`layouts/_partials/shell/root-menu.html:19-25` above `shell/sidebar.html:50`;
-  `sidebar-root.html:9-23` resolves per-manual root; `sidebar-root-for` semantics
-  in `sidebar-root.html`/`config.html:33-35`). **Selector scope:** `shell/root-
-  menu-roots.html:7-26` seeds the dropdown from *every* `Home.Sections`
-  (unless `sidebar_root_menu: false`) plus `sidebar_root_for: self` roots (TEST B
-  pop showed `field-manual`, `writing-the-field-manual`, `chat`, etc. together);
-  to present this as a manual picker, every non-manual top-level section
-  (`what-is-a-field-manual`, `writing-the-field-manual`, `potential-improvements`,
-  `chat`, …) must carry `sidebar_root_menu: false` and each manual must be a
-  top-level section or `sidebar_root_for: self` root — otherwise the dropdown is
-  a site-section switcher, not a manual picker. Follow with a sanctioned
-  `assets/scss/_styles_project.scss` counter fix so the per-manual root row
-  (`ul--0`, `td-shell-tree__item--root`) does not consume `1.` — e.g.
-  `& > .td-shell-tree__list:has(> .td-shell-tree__item--root){counter-reset:none}`
-  + `.td-shell-tree__item--root{counter-increment:none}` so chapters render
-  `1.` and children `1.1` (bare `counter-increment:none` alone yields `0.1` via
-  `counters(td-nav,".")`). Verify in a throwaway production build
-  (`hugo --cleanDestinationDir --gc --minify --environment production
-  --printPathWarnings`) that `::before` renders `1.` and prev/next pager still
-  roots at `FirstSection` (`layouts/_partials/pager-state.html` unchanged).
-  **Gap:** site today uses `params.ui.docs_sidebar_root: home` with whole-site
-  tree (hello-world at `list--3` → `N.M.K` via `counters()` at
-  `_styles_project.scss:187-215`); this nav is target — implement the levers
-  and scope filter above before claiming `hello-world` demonstrates it (per
-  `conventions.md:8`).
-- Display options: variant blocks `{{< variant mode gitops >}}` (also
-  `manual`, `scripted`) and `{{< variant version "3.4" >}}`. Option ids must
-  exist in this repo's `hugo.yaml` `params.variants` (validated by
-  check-contracts.sh). Never delete a variant block to fix a rendering
-  complaint — markdown/llms.txt outputs show ALL variants.
-- Customize tokens: `{{< customize user >}}` and `{{< customize cluster >}}`.
-  Token ids must exist in this repo's `hugo.yaml` `params.customize`. Never
-  hardcode names or cluster hosts.
+- Manual lives in `content/hello-world/` — one manual per repo. New manual = clone this repo and retitle `content/hello-world/_index.md` (6 section bundles: editing, set-up, operate, things-that-broke, customize, teardown, each `index.md` + code).
+- Previous doctrine (`writing-the-field-manual/conventions.md`) and auxiliary sections (`chat`, `potential-improvements`, `what-is-a-field-manual`, `why-this-approach`) were archived to `_archive/` before the hello-world reset — see `_archive/README.md`. Restore them only if you intend to reintroduce multi-manual scope.
+- Author doctrine: the six conventions are chronological information architecture (field-work timeline → `1..N` chapters with `N.M` children; manual name in the selector above the left nav; `h1/h2/h3` right TOC), status-gate verification (every command + verify + literal expected output), inline known issues, variant selector axes, customize tokens, dual consumption. Until doctrine is restored, follow them from the archived `conventions.md` or ADRs.
+- Nav shape (target, not yet shipped): left nav must read `1` → `N` top chapters with two-level fold/unfold (`N.M`), header is `CAI Field Manual` only, manual name sits in the selector directly above the tree. Levers: per-manual `sidebar_root_for: self` + `params.ui.sidebar_root_menu: true` (`layouts/_partials/shell/root-menu.html:19-25` above `shell/sidebar.html:50`; `sidebar-root.html:9-23` resolves per-manual root; `sidebar-root-for` semantics in `sidebar-root.html`/`config.html:33-35`) plus Shell `layouts/_partials/shell/sidebar-tree.html` cover promotion (third deliberate change: Home and `sidebar_root_for: self` are covers, children render at `ul--1`/`ulNr 1`; small-screen `d-md-none` cover row is `IsHome`-only because self-roots already have the always-visible `td-shell-root--static` link in the header). **Selector scope:** `shell/root-menu-roots.html:7-26` seeds the dropdown from *every* `Home.Sections` (unless `sidebar_root_menu: false`) plus `sidebar_root_for: self` roots. The per-manual SCSS guard `& > .td-shell-tree__list:has(> .td-shell-tree__item--root){counter-reset:none}` + `.td-shell-tree__item--root{counter-increment:none}` now only serves `docs-sidebar-tree.html` (`data/docs_nav.json` path); `sidebar-tree.html` no longer emits a `ul--0`/`td-shell-tree__item--root` cover row. Verify in a throwaway production build (`hugo --cleanDestinationDir --gc --minify --environment production --printPathWarnings`) that `::before` renders `1.` and prev/next pager still roots at `FirstSection` (`layouts/_partials/pager-state.html` unchanged).
+- Display options: variant blocks `{{< variant mode gitops >}}` (also `manual`, `scripted`) and `{{< variant version "3.4" >}}`. Option ids must exist in this repo's `hugo.yaml` `params.variants` (validated by check-contracts.sh). Never delete a variant block to fix a rendering complaint — markdown/llms.txt outputs show ALL variants.
+- Customize tokens: `{{< customize user >}}` and `{{< customize cluster >}}`. Token ids must exist in this repo's `hugo.yaml` `params.customize`. Never hardcode names or cluster hosts.
 
 ## Do not touch without re-diffing
 
@@ -102,10 +63,7 @@ Sanctioned extension points in Shell (free to edit there):
 `td-variant-selector.html`, `hooks/head-end.html`, `hooks/body-end.html`,
 the customize shortcodes, `static/js/`, `static/css/`, `assets/scss/_styles_project.scss`.
 
-Local to this repo (free to edit here): `hugo.yaml` (site config: title,
-baseURL, variants, customize, menus — `docs_section`/`docs_sidebar_root` live
-in the Shell module's `hugo.yaml`), `data/home.yaml`, `content/` (manuals +
-doctrine).
+Local to this repo (free to edit here): `hugo.yaml` (site config: title, baseURL, variants, customize, menus), `data/home.yaml`, `content/hello-world/` (the manual — 6 bundles). Archived content lives in `_archive/` (gitignored; see `_archive/README.md`).
 
 ## Verification for JS changes
 
