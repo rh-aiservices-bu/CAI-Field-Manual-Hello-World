@@ -89,7 +89,7 @@ Where things live:
   table, each illustrated on the page
 - Layouts, assets, and static (chrome): live in the Shell module
   (`CAI-Field-Manual-Shell`). See that repo's README for what it exports.
-  To pick up shell updates: `hugo mod get -u github.com/rh-aiservices-bu/CAI-Field-Manual-Shell`.
+  To pick up shell updates: `hugo mod get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell` (no `-u` — that upgrades transitive deps; verify `hugo mod graph` still shows oink `v1.4.0`).
 
 The project root stays minimal: the Shell module supplies the layouts and
 chrome, the theme module (oink) supplies the navbar chrome, and build outputs

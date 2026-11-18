@@ -116,10 +116,10 @@ module). If you change it, verify the rendered page actually works (dev server
 ## Updating the shell
 
 ```sh
-hugo mod get -u github.com/rh-aiservices-bu/CAI-Field-Manual-Shell
+hugo mod get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell
 ```
 
-Then re-run the publication gate.
+Then verify `hugo mod graph` still shows `github.com/pgsty/oink v1.4.0` (the pinned theme — do not use `-u`, it upgrades transitive deps). Re-run the publication gate.
 
 ## omp agent (CI)
 
