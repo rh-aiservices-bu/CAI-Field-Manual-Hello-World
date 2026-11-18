@@ -3,12 +3,10 @@ Rendered site: https://rh-aiservices-bu.github.io/CAI-Field-Manual-Hello-World/
 # CAI Field Manual — Hello World
 
 The CAI Field Manual is a working example of what future field manuals should
-look like: chronological field-work notes — set up → operate → things that
-broke — where every command is followed by a verify step with literal expected
-output, and known issues are documented where the reader hits them. It
-emulates the [RHOAI MaaS guide](https://rh-aiservices-bu.github.io/rhoai-maas-guide/modules/main/index.html)'s
-approach with deliberate divergences; the rationale lives in
-[Why this approach](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Hello-World/why-this-approach/).
+look like: chronological field-work notes — prerequisites → set up → operate
+→ things that broke → customize → teardown — where every command is followed
+by a verify step with literal expected output, and known issues are documented
+where the reader hits them.
 
 This repo is the **rendered site + all content**. Look-and-feel, layout
 overrides, and build rules come from the
@@ -20,8 +18,8 @@ theme (`github.com/pgsty/oink`, transitively via the Shell module).
 
 ## How to consume it
 
-Start at [Field Manual](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Hello-World/field-manual/) —
-the first manual is the [Hello World Field Manual](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Hello-World/field-manual/hello-world/).
+Start at the [Hello World Field Manual](https://rh-aiservices-bu.github.io/CAI-Field-Manual-Hello-World/hello-world/) —
+the blank skeleton with six bundles (prerequisites, set up, operate, things that broke, customize, teardown).
 
 **Humans** — read the rendered HTML:
 
@@ -58,38 +56,16 @@ the first manual is the [Hello World Field Manual](https://rh-aiservices-bu.gith
 - **Issues** — file a [GitHub Issue](https://github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World/issues)
   with the page URL (or the `content/` path) and what you hit.
   *(Labels and triage conventions TBD for now.)*
-- **Changes** — PRs to `main` are welcome. Content lives in
-  `content/field-manual/<manual>/`; start a new manual by duplicating the blank
-  skeleton in `content/field-manual/hello-world/`. Run the publication gate
-  (below) before opening a PR. Merges to `main` deploy automatically via
-  GitHub Actions; repo Settings → Pages → Source must be **GitHub Actions**
-  (one-time admin step).
+- **Changes** — PRs to `main` are welcome. Content lives in `content/hello-world/` — one manual per repo, six section bundles (`prerequisites/`, `set-up/`, `operate/`, `things-that-broke/`, `customize/`, `teardown/`, each `index.md` + code). New manual = clone this repo and retitle `content/hello-world/_index.md`. Run the publication gate (below) before opening a PR. Merges to `main` deploy automatically via GitHub Actions; repo Settings → Pages → Source must be **GitHub Actions** (one-time admin step).
 
 Where things live:
 
-- `hugo.yaml` — site config: title, baseURL, languages, markup, outputs,
-  menus, module imports, plus the display-option (variant) axes — an ordered
-  slice with per-axis `neutral` (show-all) and `default`, plus optional
-  `status.specific` / `status.neutral` phrases for the selector's status
-  line (`{value}` = the option label) — customize fields (user, cluster).
-  Chrome defaults (`logo`, `offline_search`, `copyright`, `footer_center_info`,
-  `ui` incl. `docs_section`/`docs_sidebar_root`) live in the Shell module's
-  `hugo.yaml` and are deep-merged; site values win on conflict.
-- `data/home.yaml` — landing page sections (hero, cards, cta)
+- `hugo.yaml` — site config: title, baseURL, languages, markup, outputs, module imports, plus the display-option (variant) axes and customize fields (user, cluster). Chrome defaults (`logo`, `offline_search`, `copyright`, `footer_center_info`, `ui` incl. `docs_section`/`docs_sidebar_root`) live in the Shell module's `hugo.yaml` and are deep-merged; site values win on conflict.
+- `data/home.yaml` — landing page sections (hero, cards, timeline, faq, cta)
 - `content/_index.md` — home page front matter
-- `content/field-manual/` — the manuals; `hello-world/` doubles as the blank
-  skeleton to duplicate
-- `content/why-this-approach.md` — design rationale (what the prototype
-  copies from the MaaS guide, changes, and why)
-- `content/writing-the-field-manual/` — the author doctrine section (how
-  to write a manual: the six conventions, annotated examples, and the
-  walkthrough for a first manual)
-- `content/chat/` — chat page (discusses any manual via your own endpoint)
-- `content/potential-improvements/` — oink 1.4.0 capabilities left on the
-  table, each illustrated on the page
-- Layouts, assets, and static (chrome): live in the Shell module
-  (`CAI-Field-Manual-Shell`). See that repo's README for what it exports.
-  To pick up shell updates: edit the Shell import's `version:` hash in `hugo.yaml` to the new commit (e.g. `git ls-remote https://github.com/rh-aiservices-bu/CAI-Field-Manual-Shell main | cut -c1-12`), then re-run the publication gate — Hugo resolves the pinned commit directly, so the build passes even if `go.mod`/`go.sum` are stale. `version:` accepts semver, branch names, or commit hashes (Hugo ≥ 0.150); a commit hash is deliberate — commit-precise, no Shell tagging. To reconcile `go.mod`/`go.sum` after a bump, run `go get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@<hash>` (don't use `hugo mod get` — it rewrites `go.mod`/`go.sum` to Shell `main`, dirtying the lockfiles). Verify `hugo mod graph` shows oink `v1.4.0` and the pinned pseudo-version.
+- `content/hello-world/` — the manual: six bundles (`prerequisites/`, `set-up/`, `operate/`, `things-that-broke/`, `customize/`, `teardown/`)
+- `_archive/` — previous content before the hello-world reset (gitignored; not rendered)
+- Layouts, assets, and static (chrome): live in the Shell module (`CAI-Field-Manual-Shell`). See that repo's README for what it exports. To pick up shell updates: edit the Shell import's `version:` hash in `hugo.yaml` to the new commit (e.g. `git ls-remote https://github.com/rh-aiservices-bu/CAI-Field-Manual-Shell main | cut -c1-12`), then re-run the publication gate — Hugo resolves the pinned commit directly, so the build passes even if `go.mod`/`go.sum` are stale. `version:` accepts semver, branch names, or commit hashes (Hugo ≥ 0.150); a commit hash is deliberate — commit-precise, no Shell tagging. To reconcile `go.mod`/`go.sum` after a bump, run `go get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@<hash>` (don't use `hugo mod get` — it rewrites `go.mod`/`go.sum` to Shell `main`, dirtying the lockfiles). Verify `hugo mod graph` shows oink `v1.4.0` and the pinned pseudo-version.
 
 The project root stays minimal: the Shell module supplies the layouts and
 chrome, the theme module (oink) supplies the navbar chrome, and build outputs
