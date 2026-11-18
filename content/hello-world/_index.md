@@ -4,6 +4,7 @@ description: A blank field manual — duplicate this manual and fill in your own
 weight: 10
 icon: fa-solid fa-seedling
 sidebar_root_for: self
+no_list: true
 cascade:
   type: docs
   footer_style: slim
