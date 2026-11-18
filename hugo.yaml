@@ -61,7 +61,7 @@ params:
   github_branch: main
   offline_search: true
   copyright:
-    authors: Project contributors
+    authors: '[Project contributors](https://github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World/graphs/contributors)'
   footer_center_info: ''
   # Display options: the page-top selector (td-variant-selector.html, from
   # the shell module) persists these in localStorage and filters content
