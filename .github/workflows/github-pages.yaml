@@ -121,6 +121,7 @@ jobs:
           sass --version
 
       - name: Download OINK
+        run: go mod download
 
       # Same gate as the deploy build and the AGENTS.md gate: fail on build
       # errors or any WARN besides the known oink libsass deprecation.

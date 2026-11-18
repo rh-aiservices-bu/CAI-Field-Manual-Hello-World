@@ -20,8 +20,9 @@
 html.td-viz-lock{overflow:hidden}
 @media print{.td-viz-embed{display:none}}
 {{ if $isFlow -}}
-.td-shell-article:has(.td-viz-embed--flow){overflow:visible}
-.td-viz-embed--flow:not(.td-viz-embed--expanded){width:min(980px,calc(100vw - 340px));max-width:none;margin-left:calc(50% - min(490px,calc(50vw - 170px)));aspect-ratio:auto;min-height:640px;border:0;box-shadow:0 1px 0 var(--bs-border-color)}
+/* Flow diagram: bleed to the article edge only — never under the left TOC/sidebar.
+   The old 50%-calc trick escaped the flex column and painted behind the sidebar. */
+.td-viz-embed--flow:not(.td-viz-embed--expanded){width:100%;max-width:none;margin:0;min-height:640px;aspect-ratio:auto;border:0;box-shadow:none}
 {{ end -}}
 </style>
 {{ end -}}
