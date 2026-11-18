@@ -5,86 +5,69 @@ weight: 40
 icon: fa-solid fa-wand-magic-sparkles
 ---
 
-Reading a field manual is not just scrolling. Two controls shape what you see and where you take it — the variant selector that filters content to your version and workflow, and the command palette that lets you search the site and hand the current page to your AI assistant. This page shows both at their default state and explains what happens when you use them.
+Reading a field manual is not just scrolling. Two controls shape what you see and where you take it — the variant selector that filters content to your version and workflow, and the command palette that lets you search the site and hand the current page to your AI assistant. This page shows both at their default state and explains how to use them.
 
 ## Variant selector — pick your version and workflow, or show all
 
-At the top of every manual page, directly above the first heading, the selector offers one row per axis declared in `hugo.yaml`:
+At the top of every manual page, directly above the first heading, the selector offers one row per filter:
 
 ![Variant selector with two axes: RHAIE Version (Show all, 3.4, 3.5, 3.6) and Ops Mode (Show all, GitOps, Manual, Scripted) — both on Show all](variant-selector.png)
 
-What you are looking at:
+- **RHAIE Version** — `Show all` · `3.4` · `3.5` · `3.6`
+- **Ops Mode** — `Show all` · `GitOps` · `Manual` · `Scripted`
 
-- **RHAIE Version** — `Show all` · `3.4` · `3.5` · `3.6`. Sourced from the `version` axis in `hugo.yaml` (`params.variants[0]`). The neutral option is `Show all` (`all`); the shipped default is `3.6`.
-- **Ops Mode** — `Show all` · `GitOps` · `Manual` · `Scripted`. The `mode` axis in `hugo.yaml` (`params.variants[1]`). Its neutral option is also `Show all`; the default is `all` itself, so new visitors see every ops mode side by side.
+How to use it:
 
-How it works:
-
-1. **Select, don't navigate.** Clicking an option does not reload the page. A small inline script sets `data-td-variant-<axis>` on `<html>` and CSS hides every `variant` shortcode block whose `data-td-variant-id` does not contain the active value or the axis's neutral value. A single block can carry several options — see the authoring example below — and stays visible for either.
-2. **Show all is the escape hatch.** Choosing `Show all` removes the filter for that axis entirely, so version notes and alternative procedure steps render together. This is also the state that the markdown, `llms.txt`, and `_print` outputs use — they carry every variant labeled (`RHAIE Version: 3.5`, `Ops Mode: GitOps`) and nothing hidden.
-3. **It remembers.** The choice is stored as `td-variant:v1:<axis>` in `localStorage` and re-applied on every page, visit, and tab. The [Customize this!]({{< relref "/hello-world/customize" >}}) page renders the same option groups (`data-td-variant-options`) so the selector and the form mirror each other and sync across tabs via the `storage` event.
-
-For authors, the selector is data-driven — one entry per option in `hugo.yaml` (`params.variants`) and one shortcode to wrap content:
-
-```md
-{{< variant version "3.5 3.6" >}}
-Content for 3.5 and 3.6 (hidden when 3.4 is active, visible for Show all).
-{{< /variant >}}
-```
-
-Do not delete a variant block to silence a rendering complaint — the `markdown`, `llms.txt`, and `_print` outputs intentionally show all variants.
+1. **Click a pill to filter.** Only the content for that version or ops mode stays visible — for example, picking `3.5` hides notes that only apply to `3.4` or `3.6`.
+2. **Pick Show all to compare.** `Show all` removes the filter for that row so every version's notes and every procedure variant render together. Use it when you want to see the differences side by side.
+3. **Your choice sticks.** Once you pick a version or mode, it stays selected as you move between pages. Change it anytime by clicking a different pill, or reset it on the [Customize this!]({{< relref "/hello-world/customize" >}}) page where the same options appear.
 
 ## Command palette — search, then act
 
-The site's search and all quick actions live in one overlay — the command palette. It is the `td-shell-search` dialog bundled whenever `shell/search-enabled.html` is true (it is here — `offline_search: true` in `hugo.yaml`).
+The site's search and all quick actions live in one overlay — the command palette:
 
 ![Command palette open on Search with scope All sections vs Hello World and a Page actions group listing Copy Markdown, Open in ChatGPT, Open in Claude, Open Gemini, Feed it to my AI Agent, View markdown, and View edit history](command-palette.png)
 
 What you are looking at:
 
-- The header is a live `Search…` input (placeholder `Search…`, `esc` to close).
-- Right under it, **Search in** toggles the search scope: `All sections` (the whole site) vs. the current manual section (`Hello World` on this page). The index is the offline Lunr bundle published as `offline-search-index.en.json`.
-- Below that, the **Page actions** group. Every row there is the same registry entry that appears in the caret menu beside the page title — the palette is just the keyboard-friendly way to reach it.
+- The header is a live `Search…` input.
+- Right under it, **Search in** toggles where to search: `All sections` (the whole site) vs. the current manual (`Hello World` on this page).
+- Below that, the **Page actions** group — quick actions for the page you are on. They are the same actions that appear in the menu next to the page title; the palette is just the keyboard-friendly way to reach them.
 
-### How to trigger it
+### How to open it
 
-The palette is `oink/assets/js/command-palette.js` (class `td-shell-search`). Any of these opens it:
+- **Click** the `Search…` box in the top bar or the magnifying-glass button in the sidebar.
+- **Press ⌘K / Ctrl+K** — opens the palette if closed, closes it if open.
+- **Press /** — opens directly into full search.
+- **Press \\** — opens directly into the command list (same as typing `>`).
+- **Press Esc** — closes the palette and returns focus to where you were.
 
-- **Mouse** — click the **Search…** box in the top navbar or the magnifying-glass button in the sidebar header. Both carry `data-td-shell-search-open` and target `#td-shell-search` (on mobile the same trigger lives in the drawer). Every action is also reachable without the palette: click the disclosure caret `▾` next to the page title to open the `td-page-actions` menu (`layouts/_partials/actions/title-menu.html`) — palette and title menu share the same `#td-action-manifest` from `layouts/_partials/actions/context.html`, so rows never diverge.
-- **⌘K / Ctrl+K** — the canonical toggle. Pressing <kbd>⌘ K</kbd> (macOS, `metaKey`) or <kbd>Ctrl K</kbd> elsewhere opens the palette if closed and closes it if open (`command-palette.js:779-783`). Blocked while a `<dialog>` is open.
-- **/** — bare slash outside any text field opens full search mode (no `meta`/`ctrl`/`alt`/`shift`; blocked in `[contenteditable]` or when a dialog is open). This is the hint shown as <kbd>/</kbd> on the sidebar search button. Inside the palette, prefixing the query with `>` limits results to commands.
-- **\\** — bare backslash outside any text field opens directly into command mode (`open(event, COMMAND_PREFIX)` where `COMMAND_PREFIX` is `>`) — the same state as typing `>` manually.
-- **Esc** — closes the palette and returns focus to the control that last opened it (`command-palette.js:795-797`).
+Once open, type to filter pages and actions, use <kbd>↑</kbd>/<kbd>↓</kbd> to move, <kbd>↵</kbd> to open, and prefix your query with `>` to show only commands.
 
-Once open: type to filter pages and actions, <kbd>↑</kbd>/<kbd>↓</kbd> to move, <kbd>↵</kbd> to open, <kbd>esc</kbd> to close. Starting a query with `>` limits results to commands only.
-
+You can also reach the same actions without the palette: click the disclosure caret `▾` next to the page title to open the page menu.
 
 ### Using the AI actions
 
-The rows you see under **Page actions** are the field manual's AI integration — one source, dual consumption made actionable:
+The rows you see under **Page actions** let you take the current page elsewhere — especially to your AI assistant:
 
 | Row | What it does |
 |---|---|
-| **Copy Markdown** | Copies the current page's markdown output to the clipboard (via `OinkClipboard.writeText`, with a dialog-aware `execCommand` fallback). The title-bar copy button and this palette row share one confirmation flash. |
-| **Open in ChatGPT** | Opens `chatgpt.com` in a new tab with a pre-filled prompt `Read from <permalink> so I can ask questions about it.` The registry rewrites the URL at click time so the deployed host, current query, and hash survive (`promptTemplate` carries the localized `ui_open_in_prompt`; `actions/context.html:139`). |
-| **Open in Claude** | Same pre-fill, targeting `claude.ai/new` (`actions/context.html:144`). |
-| **Open Gemini** | Opens the plain Gemini app `https://gemini.google.com/app` in a new tab — no prompt prefill. `actions/context.html:149` sets `promptTemplate ""` for this row, so unlike ChatGPT/Claude there is no "Read from <permalink>…" query string on the URL. Paste the page URL or ask by hand. |
-| **Feed it to my AI Agent** | Opens the **Feed this to your AI Agent** modal dialog on the current page (see below) — `href="#agent-prompt"` is the trigger, not a navigation. |
-| **View markdown** | Opens the raw `index.md` output for the page in a new tab. |
-| **View edit history** | Opens the GitHub commit history for the page's source file (`content/hello-world/what-is-a-field-manual/showcase/index.md`). |
-
-The three assistant links and the *Feed it to my AI Agent* row only render when the site's `page_context_menu.assistant_links` policy allows them and, for the agent row, when `params.github_repo` is set — without a repo there is nothing to clone.
+| **Copy Markdown** | Copies the current page as markdown to your clipboard. |
+| **Open in ChatGPT** | Opens ChatGPT in a new tab with this page pre-loaded so you can ask questions about it. |
+| **Open in Claude** | Same, for Claude. |
+| **Open Gemini** | Opens the Gemini app in a new tab. Unlike ChatGPT and Claude, it does not pre-fill a prompt — paste the page URL yourself. |
+| **Feed it to my AI Agent** | Opens a dialog with a ready-to-copy setup prompt for Claude Code or Codex (see below). |
+| **View markdown** | Opens the raw markdown for this page in a new tab. |
+| **View edit history** | Opens the GitHub history for this page. |
 
 #### Feed it to my AI Agent — the copy-prompt dialog
 
-Choosing **Feed it to my AI Agent** in the palette (or in the title menu) sets the fragment to `#agent-prompt`, which `static/js/agent-setup.js` watches for. The script clears the hash (via `history.replaceState`, without pushing a history entry so the action can re-fire), builds and opens a `<dialog>` titled *Feed this to your AI Agent*, and focuses the `Copy prompt` button:
+Choosing **Feed it to my AI Agent** opens a dialog titled *Feed this to your AI Agent* with a single `Copy prompt` button:
 
-- The prompt is assembled from `window.__TD_AGENT_SETUP__.repo` (which `layouts/_partials/hooks/body-end.html` injects from `params.github_repo` — `https://github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World`). That gives the clone URL `https://github.com/rh-aiservices-bu/CAI-Field-Manual-Hello-World.git` and the directory name `CAI-Field-Manual-Hello-World`.
-- The prompt tells the agent to clone the repo, read the *Clone and render locally* section of `README.md` (the single source of truth for prerequisites, `hugo --printPathWarnings` publication gate, and `go get` / `hugo mod graph` module pin checks), survey `content/`, `data/home.yaml`, `hugo.yaml`, `.github/workflows/`, and the Shell module for chrome, then report what the manual can do — filtering, `customize` tokens, per-page markdown / `llms.txt` / `_print` bundles, and how to add a new `content/hello-world/` manual — before asking what to do next.
-- **Copy prompt** copies the text via the same `OinkClipboard` helper the copy actions use (dialog-aware, so the palette's hidden fallback field is not targeted). The label flips to `Copied` for 1.6 s. Closing the dialog — `×`, clicking the backdrop, or <kbd>esc</kbd> (which `stopPropagation`s so the title menu's own <kbd>esc</kbd> handler does not also fire) — restores focus to the control that opened the palette.
-
-If the page was opened with no palette in the DOM (landing page, `_print` bundle), the hash listener is not installed and the row is not registered — the feature only exists where the palette does.
+- The prompt tells your agent to clone this repository, follow the setup steps in the README, survey the manuals, and report what the manual can do — then ask you what to do next.
+- Click **Copy prompt** to copy it, then paste it into Claude Code or Codex. The label briefly flips to `Copied` to confirm.
+- Close the dialog with `×`, by clicking outside it, or with <kbd>esc</kbd>.
 
 ---
 
-The two screenshots above are page resources of this bundle (`variant-selector.png`, `command-palette.png`). They were taken with both variant axes on `Show all` and the palette freshly opened with an empty query — the state new visitors see first.
+The two screenshots above are part of this page. They were taken with both filters on `Show all` and the palette freshly opened with an empty query — the state new visitors see first.
