@@ -89,7 +89,7 @@ Where things live:
   table, each illustrated on the page
 - Layouts, assets, and static (chrome): live in the Shell module
   (`CAI-Field-Manual-Shell`). See that repo's README for what it exports.
-  To pick up shell updates: `hugo mod get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell` (no `-u` — that upgrades transitive deps; verify `hugo mod graph` still shows oink `v1.4.0`).
+  To pick up shell updates: edit the Shell import's `version:` hash in `hugo.yaml` to the new commit (e.g. `git ls-remote https://github.com/rh-aiservices-bu/CAI-Field-Manual-Shell main | cut -c1-12`), then re-run the publication gate — Hugo resolves the pinned commit directly, so the build passes even if `go.mod`/`go.sum` are stale. `version:` accepts semver, branch names, or commit hashes (Hugo ≥ 0.150); a commit hash is deliberate — commit-precise, no Shell tagging. To reconcile `go.mod`/`go.sum` after a bump, run `go get github.com/rh-aiservices-bu/CAI-Field-Manual-Shell@<hash>` (don't use `hugo mod get` — it ignores the pin and can float the build to Shell `main`). Verify `hugo mod graph` shows oink `v1.4.0` and the pinned pseudo-version.
 
 The project root stays minimal: the Shell module supplies the layouts and
 chrome, the theme module (oink) supplies the navbar chrome, and build outputs
@@ -121,7 +121,9 @@ hugo server
 With a path in `baseURL`
 (`https://rh-aiservices-bu.github.io/CAI-Field-Manual-Hello-World/`), the dev
 server serves at `http://localhost:1313/CAI-Field-Manual-Hello-World/` — a 404
-at the root is expected, not a broken build.
+at the root is expected, not a broken build. Builds use the Shell commit pinned in
+`hugo.yaml` `module.imports[].version`, not Shell `main` — deliberate, commit-precise;
+the `hugo.work` workspace replacement below overrides it only for testing unpushed Shell work.
 
 To verify a Shell working-tree change locally (before it is pushed), add a
 workspace replacement — create `hugo.work` in this repo root containing:
