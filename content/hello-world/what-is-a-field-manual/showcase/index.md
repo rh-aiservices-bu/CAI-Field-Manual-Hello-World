@@ -20,11 +20,19 @@ What you are looking at:
 
 How it works:
 
-1. **Select, don't navigate.** Clicking an option does not reload the page. A small inline script sets `data-td-variant-<axis>` on `<html>` and CSS hides every `variant` shortcode block whose `data-td-variant-id` does not contain the active value or the axis's neutral value. A single block can carry several options — `{{%/* variant version "3.5 3.6" */%}}` — and stays visible for either.
+1. **Select, don't navigate.** Clicking an option does not reload the page. A small inline script sets `data-td-variant-<axis>` on `<html>` and CSS hides every `variant` shortcode block whose `data-td-variant-id` does not contain the active value or the axis's neutral value. A single block can carry several options — see the authoring example below — and stays visible for either.
 2. **Show all is the escape hatch.** Choosing `Show all` removes the filter for that axis entirely, so version notes and alternative procedure steps render together. This is also the state that the markdown, `llms.txt`, and `_print` outputs use — they carry every variant labeled (`RHAIE Version: 3.5`, `Ops Mode: GitOps`) and nothing hidden.
 3. **It remembers.** The choice is stored as `td-variant:v1:<axis>` in `localStorage` and re-applied on every page, visit, and tab. The [Customize this!]({{< relref "/hello-world/customize" >}}) page renders the same option groups (`data-td-variant-options`) so the selector and the form mirror each other and sync across tabs via the `storage` event.
 
-For authors, the selector is data-driven. Adding an axis or option is one entry in `hugo.yaml` under `params.variants` (with `id`, `label`, `default`, `neutral`, and `options`); wrapping content is one shortcode `{{%/* variant version "3.4" */%}}…{{%/* /variant */%}}`. Removing a variant block to silence a rendering complaint is never correct — markdown outputs intentionally show all variants.
+For authors, the selector is data-driven — one entry per option in `hugo.yaml` (`params.variants`) and one shortcode to wrap content:
+
+```md
+{{< variant version "3.5 3.6" >}}
+Content for 3.5 and 3.6 (hidden when 3.4 is active, visible for Show all).
+{{< /variant >}}
+```
+
+Do not delete a variant block to silence a rendering complaint — the `markdown`, `llms.txt`, and `_print` outputs intentionally show all variants.
 
 ## Command palette — search, then act
 
@@ -38,16 +46,18 @@ What you are looking at:
 - Right under it, **Search in** toggles the search scope: `All sections` (the whole site) vs. the current manual section (`Hello World` on this page). The index is the offline Lunr bundle published as `offline-search-index.en.json`.
 - Below that, the **Page actions** group. Every row there is the same registry entry that appears in the caret menu beside the page title — the palette is just the keyboard-friendly way to reach it.
 
-### How to open it
-Three equivalent triggers, all of which set `logicalOpen` in `command-palette.js`:
+### How to trigger it
 
-- **Click** the `Search…` box in the top navbar or the magnifying-glass button in the sidebar header (both carry `data-td-shell-search-open` and target `#td-shell-search`). On mobile, the same trigger lives in the navigation drawer.
-- **Press `/`** (or `F` when keyboard navigation is on) anywhere outside a text field — the palette opens in full search mode, with `Search…` focused. This is the hint shown as <kbd>/</kbd> on the sidebar search button.
-- **Press `\`** (or `C`) outside a text field — the palette opens restricted to commands, the same as if you had typed `>` as the first character. The cheat sheet (question-mark button in the bottom bar, hover/focus to reveal) lists every shortcut available on the current page.
+The palette is `oink/assets/js/command-palette.js` (class `td-shell-search`). Any of these opens it:
 
-Once open: type to filter pages and actions, <kbd>↑</kbd>/<kbd>↓</kbd> to move, <kbd>↵</kbd> to open, <kbd>esc</kbd> to close and return focus to the control that opened the palette. Starting a query with `>` limits results to commands only.
+- **Mouse** — click the **Search…** box in the top navbar or the magnifying-glass button in the sidebar header. Both carry `data-td-shell-search-open` and target `#td-shell-search` (on mobile the same trigger lives in the drawer). Every action is also reachable without the palette: click the disclosure caret `▾` next to the page title to open the `td-page-actions` menu (`layouts/_partials/actions/title-menu.html`) — palette and title menu share the same `#td-action-manifest` from `layouts/_partials/actions/context.html`, so rows never diverge.
+- **⌘K / Ctrl+K** — the canonical toggle. Pressing <kbd>⌘ K</kbd> (macOS, `metaKey`) or <kbd>Ctrl K</kbd> elsewhere opens the palette if closed and closes it if open (`command-palette.js:779-783`). Blocked while a `<dialog>` is open.
+- **/** — bare slash outside any text field opens full search mode (no `meta`/`ctrl`/`alt`/`shift`; blocked in `[contenteditable]` or when a dialog is open). This is the hint shown as <kbd>/</kbd> on the sidebar search button. Inside the palette, prefixing the query with `>` limits results to commands.
+- **\\** — bare backslash outside any text field opens directly into command mode (`open(event, COMMAND_PREFIX)` where `COMMAND_PREFIX` is `>`) — the same state as typing `>` manually.
+- **Esc** — closes the palette and returns focus to the control that last opened it (`command-palette.js:795-797`).
 
-The same actions are also reachable without the palette — click the disclosure caret beside the page title to open the `td-page-actions` menu. That menu and the palette share one action manifest (`#td-action-manifest`) generated by `layouts/_partials/actions/context.html`, so their rows never diverge.
+Once open: type to filter pages and actions, <kbd>↑</kbd>/<kbd>↓</kbd> to move, <kbd>↵</kbd> to open, <kbd>esc</kbd> to close. Starting a query with `>` limits results to commands only.
+
 
 ### Using the AI actions
 
@@ -56,9 +66,9 @@ The rows you see under **Page actions** are the field manual's AI integration �
 | Row | What it does |
 |---|---|
 | **Copy Markdown** | Copies the current page's markdown output to the clipboard (via `OinkClipboard.writeText`, with a dialog-aware `execCommand` fallback). The title-bar copy button and this palette row share one confirmation flash. |
-| **Open in ChatGPT** | Opens `chatgpt.com` in a new tab with a pre-filled prompt `Read from <permalink> so I can ask questions about it.` The registry rewrites the URL at click time so the deployed host, current query, and hash survive. |
-| **Open in Claude** | Same, targeting `claude.ai/new`. |
-| **Open Gemini** | Same, targeting `gemini.google.com/app`. |
+| **Open in ChatGPT** | Opens `chatgpt.com` in a new tab with a pre-filled prompt `Read from <permalink> so I can ask questions about it.` The registry rewrites the URL at click time so the deployed host, current query, and hash survive (`promptTemplate` carries the localized `ui_open_in_prompt`; `actions/context.html:139`). |
+| **Open in Claude** | Same pre-fill, targeting `claude.ai/new` (`actions/context.html:144`). |
+| **Open Gemini** | Opens the plain Gemini app `https://gemini.google.com/app` in a new tab — no prompt prefill. `actions/context.html:149` sets `promptTemplate ""` for this row, so unlike ChatGPT/Claude there is no "Read from <permalink>…" query string on the URL. Paste the page URL or ask by hand. |
 | **Feed it to my AI Agent** | Opens the **Feed this to your AI Agent** modal dialog on the current page (see below) — `href="#agent-prompt"` is the trigger, not a navigation. |
 | **View markdown** | Opens the raw `index.md` output for the page in a new tab. |
 | **View edit history** | Opens the GitHub commit history for the page's source file (`content/hello-world/what-is-a-field-manual/showcase/index.md`). |
