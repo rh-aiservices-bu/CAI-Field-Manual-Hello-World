@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Manual Repos — How They Fit Together</title>
+<link rel="stylesheet" href="https://noyitz.github.io/flowstory/templates/style.css">
+<style id="embed-fix">
+body.is-embedded #fs-highlight-box { right: 0 !important; }
+body.is-embedded #fs-overlay { right: 0 !important; }
+body.is-embedded .fs-legend { bottom: 8px !important; font-size: 12px !important; }
+body.is-embedded .fs-brand { font-size: 13px !important; }
+body.is-embedded .fs-title { left: 0 !important; right: 0 !important; text-align: center; font-size: 13px !important; }
+body.is-embedded #fs-canvas { height: 560px !important; }
+</style>
+<body>
+<button class="fs-theme-toggle" id="fs-theme">&#9790;</button>
+<div class="fs-brand" id="fs-brand"></div>
+<div class="fs-title" id="fs-title"></div>
+
+<div class="fs-panel">
+  <div class="fs-flow-bar">
+    <select id="fs-flow-select"></select>
+    <button class="fs-start" id="fs-play">&#9654; Start</button>
+    <button id="fs-speed">1x</button>
+    <button id="fs-loop" style="border-color:#79c0ff;color:#79c0ff">&#8635; Loop</button>
+    <button class="fs-reset" id="fs-reset">Reset</button>
+  </div>
+  <div class="fs-steps" id="fs-steps">
+    <div class="fs-steps-title">Flow Steps <span style="font-weight:400;font-size:11px;color:var(--fs-text-dim)">· click to jump</span></div>
+    <div id="fs-steps-container"></div>
+  </div>
+  <div class="fs-inspector" id="fs-inspector">
+    <div class="fs-inspector-title" id="fs-inspector-title" style="color:var(--fs-accent)">Relationship</div>
+    <div id="fs-inspector-content"></div>
+  </div>
+</div>
+
+<div id="fs-highlight-box" style="display:none;position:fixed;z-index:350;border-radius:10px;pointer-events:none"></div>
+<div id="fs-overlay" style="display:none;position:fixed;top:0;left:0;right:380px;bottom:0;z-index:300;background:rgba(0,0,0,0.6)">
+  <div id="fs-overlay-card" style="position:absolute;background:#161b22ee;border:1px solid #30363d;border-radius:14px;max-width:440px;padding:22px 26px;box-shadow:0 12px 40px rgba(0,0,0,0.5)">
+    <button id="fs-overlay-close" style="position:absolute;top:10px;right:14px;background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px">✕</button>
+    <div id="fs-overlay-accent" style="width:4px;height:24px;border-radius:2px;position:absolute;left:0;top:22px"></div>
+    <h2 id="fs-overlay-title" style="margin:0 0 6px;font-size:18px;color:#c9d1d9;font-family:system-ui"></h2>
+    <p id="fs-overlay-desc" style="margin:0 0 14px;font-size:13px;color:#8b949e;line-height:1.5;font-family:system-ui"></p>
+    <div id="fs-overlay-details" style="font-size:12px;font-family:'SF Mono',Menlo,monospace"></div>
+    <button id="fs-overlay-resume" style="margin-top:14px;padding:7px 20px;border:1px solid #3fb950;border-radius:8px;background:transparent;color:#3fb950;font-size:13px;cursor:pointer;font-family:system-ui">&#9654; Resume Flow</button>
+  </div>
+</div>
+
+<div class="fs-legend" id="fs-legend"></div>
+<canvas id="fs-canvas"></canvas>
+
+<script type="module">
+import { FlowStory } from 'https://noyitz.github.io/flowstory/src/index.js';
+
+const isEmbedded = window.self !== window.top;
+if (isEmbedded) document.body.classList.add('is-embedded');
+if (isEmbedded) {
+  const fsPanel = document.querySelector(".fs-panel");
+  if (fsPanel) { fsPanel.style.display = "none"; fsPanel.style.width = "0"; }
+}
+const viz = new FlowStory(document.getElementById('fs-canvas'), {
+  panelElement: isEmbedded ? null : document.querySelector(".fs-panel"),
+  stepsContainer: isEmbedded ? null : document.getElementById('fs-steps-container'),
+  inspectorTitle: isEmbedded ? null : document.getElementById('fs-inspector-title'),
+  inspectorContent: isEmbedded ? null : document.getElementById('fs-inspector-content'),
+  overlay: document.getElementById('fs-overlay'),
+  overlayCard: document.getElementById('fs-overlay-card'),
+  overlayTitle: document.getElementById('fs-overlay-title'),
+  overlayDesc: document.getElementById('fs-overlay-desc'),
+  overlayDetails: document.getElementById('fs-overlay-details'),
+  overlayAccent: document.getElementById('fs-overlay-accent'),
+  overlayClose: document.getElementById('fs-overlay-close'),
+  overlayResume: document.getElementById('fs-overlay-resume'),
+  highlightBox: document.getElementById('fs-highlight-box'),
+  brand: document.getElementById('fs-brand'),
+  title: document.getElementById('fs-title'),
+  legend: document.getElementById('fs-legend'),
+  panelWidth: isEmbedded ? 0 : 380,
+  flowSelect: document.getElementById('fs-flow-select'),
+  playBtn: document.getElementById('fs-play'),
+  speedBtn: document.getElementById('fs-speed'),
+  loopBtn: document.getElementById('fs-loop'),
+  resetBtn: document.getElementById('fs-reset'),
+  themeBtn: document.getElementById('fs-theme'),
+});
+window.__flowstory = viz;
+
+const diagram = {
+  meta: {
+    title: "Field Manual Repos",
+    author: "CAI Field Manual",
+    branding: { logo: "", title: "" }
+  },
+  canvas: { width: 1080, height: 640 },
+  nodes: {
+    oink:  { x: 130, y: 58, w: 200, h: 58, label: "Oink", sublabel: "pgsty/oink v1.4.0 · theme", color: "#8b949e", fontSize: 13 },
+    hugo:  { x: 360, y: 58, w: 180, h: 58, label: "Hugo", sublabel: "Extended ≥ 0.168 · Go ≥ 1.27", color: "#8b949e", fontSize: 12 },
+    shell: { x: 580, y: 58, w: 300, h: 58, label: "Shell brings Hugo + Oink", sublabel: "CAI-Field-Manual-Shell · Hugo module", color: "#58a6ff", fontSize: 14 },
+
+    row1: { x: 10, y: 138, w: 1080, h: 250, type: "boundary", label: "Manuals (5–10) — each repo owns its content, each deploys as its own Pages site", color: "#8b949e", labelAlign: "left" },
+
+    m0: { x: 22,  y: 168, w: 180, h: 62, label: "Hello-World", sublabel: "template · 6 bundles", color: "#3fb950", fontSize: 13 },
+    m1: { x: 192, y: 168, w: 180, h: 62, label: "MaaS", sublabel: "content/guide/", color: "#f0883e", fontSize: 13 },
+    m2: { x: 362, y: 168, w: 200, h: 62, label: "Migration 2.25→3.5", sublabel: "content/rhoai-2-25-to-3-5/", color: "#d2a8ff", fontSize: 12 },
+    m3: { x: 552, y: 168, w: 170, h: 62, label: "Inference", sublabel: "planned", color: "#8b949e", fontSize: 12, soon: true },
+    m4: { x: 722, y: 168, w: 170, h: 62, label: "Manual 5", sublabel: "+ clones Hello-World", color: "#8b949e", fontSize: 12 },
+    m5: { x: 892, y: 168, w: 180, h: 62, label: "Manuals 6 … 10", sublabel: "+ same pattern", color: "#8b949e", fontSize: 12 },
+
+    s0: { x: 22,  y: 248, w: 180, h: 42, label: "own site", sublabel: "…/Hello-World/", color: "#3fb950", fontSize: 12 },
+    s1: { x: 192, y: 248, w: 180, h: 42, label: "own site", sublabel: "…/MaaS/", color: "#f0883e", fontSize: 12 },
+    s2: { x: 362, y: 248, w: 200, h: 42, label: "own site", sublabel: "…/Migration-2-3/", color: "#d2a8ff", fontSize: 12 },
+    s3: { x: 552, y: 248, w: 170, h: 42, label: "own site", sublabel: "when ready", color: "#8b949e", fontSize: 12 },
+    s4: { x: 722, y: 248, w: 170, h: 42, label: "own site", sublabel: "…", color: "#8b949e", fontSize: 12 },
+    s5: { x: 892, y: 248, w: 180, h: 42, label: "own site", sublabel: "…", color: "#8b949e", fontSize: 12 },
+
+    library:      { x: 300, y: 420, w: 490, h: 62, label: "Library  —  aggregator", sublabel: "CAI-Field-Manual-Library · mounts all manuals · one build", color: "#79c0ff", fontSize: 14 },
+    library_site: { x: 390, y: 530, w: 310, h: 56, label: "Library site", sublabel: "…/Library/  ·  red.ht/CAIFieldManuals", color: "#79c0ff", fontSize: 13 }
+  },
+  tooltips: {
+    oink: {
+      title: "Oink — theme",
+      description: "Upstream docs theme. Shell is the intended importer; MaaS and Library still import it directly (target: Shell only).",
+      details: [["Upstream", "pgsty/oink v1.4.0"], ["Imported by", "Shell only"]]
+    },
+    hugo: {
+      title: "Hugo + Go — generator",
+      description: "Hugo Extended builds every manual and Library. Shell holds the reference hugoVersion pin; every site still repeats hugoVersion.min in its own hugo.yaml (not yet centralized).",
+      details: [["Version", "Hugo Extended ≥ 0.168, Go ≥ 1.27"], ["Reference pin", "Shell hugo.yaml → hugoVersion.min: 0.168.0"], ["Per-site", "each hugo.yaml also declares hugoVersion.min"]]
+    },
+    shell: {
+      title: "Shell — what brings Hugo + Oink into the system",
+      description: "Hugo module with no content, no baseURL, no own Pages. Imports Oink and holds the reference Hugo version — so chrome changes ship once. Every manual and Library should import Shell, not Oink directly.",
+      details: [
+        ["Repo", "rh-aiservices-bu/CAI-Field-Manual-Shell"],
+        ["Imports Oink", "module.imports → pgsty/oink v1.4.0"],
+        ["Hugo version", "reference hugoVersion.min (sites still repeat it)"],
+        ["Owns", "layouts/ · assets/{js,scss} · static/ · scripts/publication-gate.sh"],
+        ["Today", "Hello-World + Migration import Shell ✅ — MaaS + Library still import Oink directly (target: Shell)"]
+      ],
+      links: [["Shell repo", "https://github.com/rh-aiservices-bu/CAI-Field-Manual-Shell"]]
+    },
+    m0: {
+      title: "Hello-World — template",
+      description: "Blank skeleton with 6 bundles. New manual = clone this repo.",
+      details: [["Repo", "CAI-Field-Manual-Hello-World"], ["Content", "content/hello-world/ (editing · set-up · operate · things-that-broke · customize · teardown)"], ["Shell", "✅ imports Shell @ 4adf786"]]
+    },
+    m1: {
+      title: "MaaS",
+      description: "Real manual. Still imports Oink directly — target is Shell. Extra deps need mounts in Library.",
+      details: [["Repo", "CAI-Field-Manual-MaaS"], ["Content", "content/guide/"], ["Shell", "⏳ still direct oink — target Shell"], ["Library mount", "⛔ wrong source path (real: content/guide)"]]
+    },
+    m2: {
+      title: "Migration 2.25 → 3.5",
+      description: "Migrates OpenShift AI 2.25.10+ to 3.5.",
+      details: [["Repo", "CAI-Field-Manual-Migration-2-3"], ["Content", "content/rhoai-2-25-to-3-5/"], ["Shell", "✅ imports Shell @ 1f1471c"]]
+    },
+    m3: { title: "Inference — planned", description: "Fourth manual on the roadmap.", details: [["Status", "planned"]] },
+    m4: { title: "Manual 5 — and beyond", description: "We expect 5–10 manuals total. Adding one is the same PR in Library every time.", details: [["Add", "clone Hello-World → own repo → manual content"]] },
+    m5: { title: "Manuals 6 … 10", description: "Library scales without code changes — just more mounts. One build, one nav, one search.", details: [["Scale", "5–10 manuals, no infra per manual"]] },
+    s0: { title: "Standalone site", description: "Each manual deploys independently to its own Pages.", details: [["URL", "…/CAI-Field-Manual-Hello-World/"]] },
+    s1: { title: "Standalone site", description: "Same.", details: [["URL", "…/CAI-Field-Manual-MaaS/"]] },
+    s2: { title: "Standalone site", description: "Same.", details: [["URL", "…/CAI-Field-Manual-Migration-2-3/"]] },
+    library: {
+      title: "Library — aggregator",
+      description: "One Hugo site that mounts all manuals. Does not own manual content — just aggregates. How it mounts is not critical to the story.",
+      details: [["Repo", "CAI-Field-Manual-Library"], ["Role", "aggregator — mounts all manuals · union nav/search · one build"], ["Gap", "bot push (GITHUB_TOKEN) doesn't trigger Pages — needs PAT or dispatch; MaaS mount path is wrong"]]
+    },
+    library_site: { title: "Library site — front door", description: "The only URL most readers need.", details: [["Published to", "…/CAI-Field-Manual-Library/"], ["Short", "red.ht/CAIFieldManuals (planned)"]] }
+  },
+  flows: {
+    supply: {
+      label: "Hugo + chrome",
+      steps: [
+        { text: "Shell imports Oink and holds the reference Hugo version — sites still repeat the hugoVersion pin", mode: "arrow", from: "oink", to: "shell", color: "#58a6ff", num: 1 },
+        { text: "Hugo version is the same story — Shell is the reference, not yet the single source", mode: "arrow", from: "hugo", to: "shell", color: "#58a6ff", num: 2 },
+        { text: "Live: Hello-World and Migration already import Shell", mode: "arrow", from: "shell", to: "m0", color: "#58a6ff", num: 3, glow: "m0" },
+        { text: "Library will also import Shell — today Library + MaaS still import Oink directly (target)", mode: "arrow", from: "shell", to: "library", color: "#58a6ff", num: 4, glow: "library", waypoints: [{ x: 1085, y: 65 }, { x: 1085, y: 405 }] },
+        { text: "Library mounts all manuals — one build → Library site", mode: "arrow", from: "library", to: "library_site", color: "#3fb950", num: 5 }
+      ]
+    },
+    manual_life: {
+      label: "2 — A manual's life (Hello-World)",
+      steps: [
+        { text: "Manual imports Shell — gets chrome (layouts/assets/scripts) + theme for free", mode: "arrow", from: "shell", to: "m0", color: "#58a6ff", num: 1 },
+        { text: "Deploys alone to its own Pages site", mode: "arrow", from: "m0", to: "s0", color: "#3fb950", num: 2 },
+        { text: "Also appears in Library — just an aggregator, no manual-side wiring", mode: "arrow", from: "m0", to: "library", color: "#58a6ff", num: 3, waypoints: [{ x: 1085, y: 185 }, { x: 1085, y: 405 }] }
+      ]
+    },
+    to_library: {
+      label: "3 — Manuals → Library (5–10 of them)",
+      steps: [
+        { text: "All 5–10 manuals mount into Library — same arrow each time", mode: "arrow", from: "m0", to: "library", color: "#58a6ff", num: 1, waypoints: [{ x: 1085, y: 170 }, { x: 1085, y: 400 }] },
+        { text: "MaaS does too (extra shortcodes/assets travel with it)", mode: "arrow", from: "m1", to: "library", color: "#58a6ff", num: 2, waypoints: [{ x: 1090, y: 195 }, { x: 1090, y: 415 }] },
+        { text: "One Library build — one nav, one search, all books on a shelf → Library site", mode: "arrow", from: "library", to: "library_site", color: "#3fb950", num: 3 }
+      ]
+    },
+    add: {
+      label: "4 — Add a new manual",
+      steps: [
+        { text: "Clone Hello-World — template already on Shell", mode: "arrow", from: "shell", to: "m0", color: "#58a6ff", num: 1 },
+        { text: "New repo imports Shell — chrome comes free", mode: "arrow", from: "shell", to: "m4", color: "#58a6ff", num: 2, glow: "m4" },
+        { text: "One PR in Library to mount it — appears on next deploy", mode: "arrow", from: "m4", to: "library", color: "#58a6ff", num: 3, waypoints: [{ x: 1088, y: 190 }, { x: 1088, y: 410 }] },
+        { text: "Own site + Library site from day one", mode: "arrow", from: "library", to: "library_site", color: "#3fb950", num: 4 }
+      ]
+    }
+  },
+  legend: [
+    { label: "Chrome supply (Shell → consumers)", color: "#58a6ff" },
+    { label: "Deploys / publishes", color: "#3fb950" },
+    { label: "Warning / extra deps", color: "#f0883e" }
+  ],
+  flowOrder: ["supply","manual_life","to_library","add"],
+  defaultFlow: "supply",
+  inspector: {
+    initialState: {
+      phase: "request",
+      label: "Relationship",
+      headers: [
+        { value: "Oink + Hugo → Shell (reference pins)", style: "keep", id: "h-supply" },
+        { value: "Shell → manuals (5–10) + Library", style: "keep", id: "h-manuals" },
+        { value: "Manual → own site + Library → Library site", style: "keep", id: "h-sites" }
+      ],
+      body: [
+        { value: "1 repo = 1 manual = 1 site", style: "keep", id: "b-rule" },
+        { value: "Library = aggregator only", style: "keep", id: "b-lib" }
+      ],
+      cycleState: []
+    },
+    mutations: {}
+  }
+};
+
+try {
+  await viz.load(diagram);
+  if (isEmbedded) {
+    // FlowStory sized canvas as if panel existed; reset to full width
+    const canvas = document.getElementById("fs-canvas");
+    if (canvas) {
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      viz._resize?.() || viz.resize?.() || window.dispatchEvent(new Event("resize"));
+    }
+  }
+  viz.state.loopMode = true;
+  const loopBtn = document.getElementById('fs-loop');
+  if (loopBtn) { loopBtn.textContent = '⟳ Loop ON'; loopBtn.style.borderColor = '#3fb950'; loopBtn.style.color = '#3fb950'; }
+  viz.play();
+} catch (e) {
+  console.error('FlowStory load error:', e);
+  document.body.innerHTML = `<div style="padding:40px;color:#f85149;font-family:monospace"><h2>FlowStory Load Error</h2><pre>${e.message}\n\n${e.stack||''}</pre></div>`;
+}
+</script>
+</body>
+</html>
