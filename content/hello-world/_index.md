@@ -7,12 +7,12 @@ cascade:
   type: docs
   footer_style: slim
 ---
-
 A blank field manual. The left nav follows the field-work timeline:
-prerequisites → set up → operate → things that broke → customize → teardown.
+introduction → prerequisites → set up → operate → things that broke → customize → teardown.
 The selector at the top filters RHAIE version and ops mode. Duplicate this
 manual, retitle it, and fill in your own procedures.
 
+- [Introduction — What is a field manual](what-is-a-field-manual/)
 - [Prerequisites](prerequisites/)
 - [Set up](set-up/)
 - [Operate](operate/)
