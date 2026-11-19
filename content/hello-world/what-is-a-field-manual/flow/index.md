@@ -7,9 +7,9 @@ icon: fa-solid fa-diagram-project
 
 The intended topology at a glance — Shell supplying chrome to content-only manuals, with the Library aggregating them:
 
-![Sketch: Shell (colors, features, common variables, chrome) wired to each manual — Hello-World as the template to copy or fork, plus Inference (soon), MaaS, Migration-2-3, Safety (soon) — each with its own rendered site; the Library then renders all manuals in one place at red.ht/caifm](shell-manuals-library.png)
+![Sketch: Shell (colors, features, common variables, chrome) wired to each manual — Hello-World as the template to copy or fork, plus Inference (soon), MaaS, Migration-2-3, Safety (soon) — each with its own rendered site; the Library then renders all manuals in one place (sketch labels this `red.ht/caifm`)](shell-manuals-library.png)
 
-*Whiteboard sketch overview. The red dashed outline groups the content-only manuals sharing Shell. Details the sketch adds beyond the text below — per-manual rendered sites, the Library's schedule and CI checks, the `red.ht/caifm` short link, and the planned Inference/Safety manuals — are as sketched; treat them as proposed until confirmed.*
+*Whiteboard sketch overview. The red dashed outline groups the content-only manuals sharing Shell. Details the sketch adds beyond the text below — per-manual rendered sites, the Library's schedule and CI checks, the `red.ht/caifm` alias as written in the sketch (the interactive diagram below lists `red.ht/CAIFieldManuals` as the planned canonical — treat either form as proposed until the redirect is live), and the planned Inference/Safety manuals — are as sketched; treat them as proposed until confirmed.*
 
 The interactive diagram below shows the same system with clickable detail:
 
