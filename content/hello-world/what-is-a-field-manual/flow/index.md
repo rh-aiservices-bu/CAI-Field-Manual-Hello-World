@@ -5,6 +5,14 @@ weight: 60
 icon: fa-solid fa-diagram-project
 ---
 
+The intended topology at a glance — Shell supplying chrome to content-only manuals, with the Library aggregating them:
+
+![Sketch: Shell (colors, features, common variables, chrome) wired to each manual — Hello-World as the template to copy or fork, plus Inference (soon), MaaS, Migration-2-3, Safety (soon) — each with its own rendered site; the Library then renders all manuals in one place at red.ht/caifm](shell-manuals-library.png)
+
+*Whiteboard sketch overview. The red dashed outline groups the content-only manuals sharing Shell. Details the sketch adds beyond the text below — per-manual rendered sites, the Library's schedule and CI checks, the `red.ht/caifm` short link, and the planned Inference/Safety manuals — are as sketched; treat them as proposed until confirmed.*
+
+The interactive diagram below shows the same system with clickable detail:
+
 {{< visualizer file="visualizers/fm-flow.html" label="Field Manual repos flow" embed="true" >}}
 
 Where Shell, manuals, and the Library sit. Click a node or an arrow for detail.
