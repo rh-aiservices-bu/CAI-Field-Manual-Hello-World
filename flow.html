@@ -116,7 +116,7 @@ const diagram = {
     s5: { x: 892, y: 248, w: 180, h: 42, label: "own site", sublabel: "…", color: "#8b949e", fontSize: 12 },
 
     library:      { x: 300, y: 420, w: 490, h: 62, label: "Library  —  aggregator", sublabel: "CAI-Field-Manual-Library · mounts all manuals · one build", color: "#79c0ff", fontSize: 14 },
-    library_site: { x: 390, y: 530, w: 310, h: 56, label: "Library site", sublabel: "…/Library/  ·  red.ht/CAIFieldManuals", color: "#79c0ff", fontSize: 13 }
+    library_site: { x: 390, y: 530, w: 310, h: 56, label: "Library site", sublabel: "…/Library/  ·  red.ht/caifm", color: "#79c0ff", fontSize: 13 }
   },
   tooltips: {
     oink: {
@@ -167,7 +167,7 @@ const diagram = {
       description: "One Hugo site that mounts all manuals. Does not own manual content — just aggregates. How it mounts is not critical to the story.",
       details: [["Repo", "CAI-Field-Manual-Library"], ["Role", "aggregator — mounts all manuals · union nav/search · one build"], ["Gap", "bot push (GITHUB_TOKEN) doesn't trigger Pages — needs PAT or dispatch; MaaS mount path is wrong"]]
     },
-    library_site: { title: "Library site — front door", description: "The only URL most readers need.", details: [["Published to", "…/CAI-Field-Manual-Library/"], ["Short", "red.ht/CAIFieldManuals (planned)"]] }
+    library_site: { title: "Library site — front door", description: "The only URL most readers need.", details: [["Published to", "…/CAI-Field-Manual-Library/"], ["Short", "red.ht/caifm"]] }
   },
   flows: {
     supply: {
